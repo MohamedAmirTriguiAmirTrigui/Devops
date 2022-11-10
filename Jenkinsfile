@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-environment {
-   PATH = "/usr/share/man/man1/mvn.1.gz:$PATH"
 
-}
     stages {
         stage('Git') {
             steps {
