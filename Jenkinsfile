@@ -42,44 +42,6 @@ pipeline {
                             sh 'mvn test'
                 }
           }
-          stage('Docker Build and Push') {
-       steps {
-         withDockerRegistry([credentialsId: "Docker-Hub-AmirTrigui", url: ""]) {
-           sh 'printenv'
-           sh 'sudo docker build -t likeaboos/ci:latest .'
-           sh 'docker push likeaboos/ci:latest '
-         }
-       }
-     }
 
-
-stage('Docker Compose') {
-       steps {
-               sh 'docker-compose up --d --force-recreate '
-       }
-     }
-     
-     post{
-
-            success {
-                mail to: "amirtrigui8@gmail.com",
-                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n, More info at: ${env.BUILD_URL}",
-                from: "amirtrigui8@gmail.com",
-                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            }
-
-            failure{
-                mail to: "amirtrigui8@gmail.com",
-                subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
-                from: "amirtrigui8@gmail.com",
-                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
-            }
-
-            changed{
-                mail to: "amirtrigui8@gmail.com",
-                subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
-                from: "amirtrigui8@gmail.com",
-                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
-            }
     }
 }
